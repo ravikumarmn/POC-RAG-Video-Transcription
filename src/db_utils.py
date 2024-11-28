@@ -3,7 +3,7 @@ import json
 from typing import Dict, Optional
 
 class TranscriptDB:
-    def __init__(self, db_path: str = "data/transcripts.db"):
+    def __init__(self, db_path: str = "database/transcripts.db"):
         self.db_path = db_path
         self.init_db()
 
