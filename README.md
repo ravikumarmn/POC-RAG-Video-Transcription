@@ -4,6 +4,7 @@
 
 An AI-powered tool for extracting, analyzing, and querying YouTube video transcripts with precise timestamp retrieval.
 
+<img src="misc/image.png" alt="Application Screenshot" width="400" height="200">
 </div>
 
 ## Features
@@ -37,7 +38,7 @@ An AI-powered tool for extracting, analyzing, and querying YouTube video transcr
 
 1. **Start the Application**
    ```bash
-   streamlit run streamlit_run.py
+   streamlit run src/streamlit_run.py
    ```
 
 2. **Using the Interface**
