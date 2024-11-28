@@ -97,7 +97,7 @@ Answer: """,
 
         # Create QA chain
         qa = RetrievalQA.from_chain_type(
-            llm=ChatOpenAI(temperature=0.3, model="gpt-4", api_key=st.secrets.get("OPENAI_API_KEY", None)),
+            llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini", api_key=st.secrets.get("OPENAI_API_KEY", None)),
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=True,
