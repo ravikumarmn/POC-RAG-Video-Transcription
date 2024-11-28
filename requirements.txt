@@ -7,4 +7,3 @@ google-generativeai
 youtube-transcript-api
 chromadb
 streamlit-player
-pysqlite3
