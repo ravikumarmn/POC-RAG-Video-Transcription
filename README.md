@@ -4,7 +4,7 @@
 
 An AI-powered tool for extracting, analyzing, and querying YouTube video transcripts with precise timestamp retrieval.
 
-<img src="misc/image.png" alt="Application Screenshot" width="400" height="200">
+<img src="misc/image.png" alt="Application Screenshot" width="400" height="400">
 </div>
 
 ## Features
