@@ -55,29 +55,28 @@ class VideoTranscriptRAG:
         metadatas = []
 
         # Process each transcript segment
-        for segment in self.transcript_data['transcript']:
-            texts.append(segment['text'])
-            metadatas.append({
-                'start_time': segment['start'],
-                'end_time': segment['end'],
-                'start_formatted': segment['start_formatted'],
-                'end_formatted': segment['end_formatted'],
-                'text': segment['text']
-            })
+        for segment in self.transcript_data["transcript"]:
+            texts.append(segment["text"])
+            metadatas.append(
+                {
+                    "start_time": segment["start"],
+                    "end_time": segment["end"],
+                    "start_formatted": segment["start_formatted"],
+                    "end_formatted": segment["end_formatted"],
+                    "text": segment["text"],
+                }
+            )
 
         # Create vector store
         self.vector_store = Chroma.from_texts(
-            texts=texts,
-            embedding=self.embeddings,
-            metadatas=metadatas
+            texts=texts, embedding=self.embeddings, metadatas=metadatas
         )
 
     def query_transcript(self, query: str) -> Dict:
         """Query the transcript and return answer with time range"""
         # Create retriever
         retriever = self.vector_store.as_retriever(
-            search_type="similarity",
-            search_kwargs={"k": 5}
+            search_type="similarity", search_kwargs={"k": 5}
         )
 
         # Create prompt template
@@ -92,40 +91,39 @@ Question: {question}
 Provide a clear and detailed answer based on the context. Focus on accuracy and completeness.
 
 Answer: """,
-            input_variables=["context", "question"]
+            input_variables=["context", "question"],
         )
 
         # Create QA chain
         qa = RetrievalQA.from_chain_type(
-            llm=ChatOpenAI(temperature=0.3, model="gpt-4o-mini", api_key=st.secrets.get("OPENAI_API_KEY", None)),
+            llm=ChatOpenAI(
+                temperature=0.3,
+                model="gpt-4o-mini",
+                api_key=st.secrets.get("OPENAI_API_KEY", None),
+            ),
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=True,
-            chain_type_kwargs={
-                "prompt": PROMPT,
-                "verbose": True
-            }
+            chain_type_kwargs={"prompt": PROMPT, "verbose": True},
         )
 
         # Get response
         response = qa({"query": query})
-        
+
         # Get time range from source documents
-        source_docs = response['source_documents']
+        source_docs = response["source_documents"]
         if source_docs:
             # Sort by start time
-            sorted_docs = sorted(source_docs, key=lambda x: x.metadata['start_time'])
+            sorted_docs = sorted(source_docs, key=lambda x: x.metadata["start_time"])
             time_range = {
-                'start_time': round(sorted_docs[0].metadata['start_time'], 2),
-                'end_time': round(sorted_docs[-1].metadata['end_time'], 2)
+                "start_time": round(sorted_docs[0].metadata["start_time"], 2),
+                "end_time": round(sorted_docs[-1].metadata["end_time"], 2),
             }
         else:
-            time_range = {'start_time': None, 'end_time': None}
+            time_range = {"start_time": None, "end_time": None}
 
-        return {
-            'answer': response['result'],
-            'time_range': time_range
-        }
+        return {"answer": response["result"], "time_range": time_range}
+
 
 def extract_video_id(url):
     """Extract video ID from YouTube URL"""

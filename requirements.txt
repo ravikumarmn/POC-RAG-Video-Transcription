@@ -7,3 +7,4 @@ google-generativeai
 youtube-transcript-api
 chromadb
 streamlit-player
+sqlite3 >= 3.35.0
